@@ -17,7 +17,7 @@ const App = () => {
     <SafeAreaView style={styles.appContainer}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Home"
+          initialRouteName="Calendar"
           screenOptions={{
             tabBarActiveTintColor: "#625cfd",
             headerShown: false,
