@@ -11,6 +11,8 @@ const Calendar = () => {
   const [month, setMonth] = useState<number>(date.getMonth());
   const [calendarDate, setCalendarDate] = useState<any[] | null>(null);
   const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayListKR = ["일", "월", "화", "수", "목", "금", "토"];
+  // const [toggleSwitch, setToggleSwitch] = useState(toggleSwitch);
 
   useEffect(() => {
     date.setDate(1);
@@ -65,66 +67,65 @@ const Calendar = () => {
 
   return (
     <View style={styles.calendarContainer}>
-      <View style={styles.calendarHeader}>
-        <View style={styles.calendarControl}>
-          <TouchableOpacity onPress={prevMonth}>
-            <Icon name="chevron-left" size={25} />
-          </TouchableOpacity>
-          <View style={styles.calendarTitle}>
-            <Text>
-              {month + 1 < 10 ? `0${month + 1}` : month + 1} / {currentYear}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={nextMonth}>
-            <Icon name="chevron-right" size={25} />
-          </TouchableOpacity>
+      <View style={styles.calendarControl}>
+        <TouchableOpacity onPress={prevMonth}>
+          <Icon name="chevron-left" size={25} />
+        </TouchableOpacity>
+        <View style={styles.calendarHeader}>
+          <Text style={styles.calendarTitle}>
+            {currentYear} / {month + 1 < 10 ? `0${month + 1}` : month + 1}
+          </Text>
         </View>
+        <TouchableOpacity onPress={nextMonth}>
+          <Icon name="chevron-right" size={25} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.calendarBody}>
-        <View style={styles.calendarDay}>
-          {dayListEN.map((day, idx) => {
+        <View style={styles.calendarDayList}>
+          {(false ? dayListKR : dayListEN).map((day, idx) => {
             return (
               <View
                 key={day}
                 style={
-                  (styles.calendarDayItem, idx === 0 && { marginLeft: 0 })
+                  (styles.calendarDayListItem,
+                  (idx === 0 && {
+                    marginLeft: 0,
+                    backgroundColor: "#ef7878",
+                  }) ||
+                    (idx === 6 && {
+                      marginLeft: 0,
+                      backgroundColor: "#72a6ff",
+                    }))
                 }>
-                <Text style={styles.calendarDayName}>{day}</Text>
+                <Text style={styles.calendarDayListItemName}>{day}</Text>
               </View>
             );
           })}
         </View>
-      </View>
 
-      <View style={styles.calendarBody}>
-        <View style={styles.calendarDate}>
-          {calendarDate &&
-            calendarDate.map((rowDate, idx) => {
-              return (
-                <View style={styles.calendarRowDate} key={idx}>
-                  {rowDate.map((item: any, index: number) => {
-                    return (
-                      <View
-                        style={
-                          (styles.calendarDateItemWrapper,
-                          index === 0 && { marginLeft: 0 })
-                        }
-                        key={index}>
-                        <>
-                          <View style={styles.calendarDateItem}>
-                            <Text key={index} style={styles.calendarDateItems}>
-                              {item}
-                            </Text>
-                          </View>
-                        </>
-                      </View>
-                    );
-                  })}
-                </View>
-              );
-            })}
-        </View>
+        {calendarDate &&
+          calendarDate.map((rowDate, idx) => {
+            return (
+              <View style={styles.calendarRowDate} key={idx}>
+                {rowDate.map((item: any, index: number) => {
+                  const isToday =
+                    today === item &&
+                    currentMonth === month &&
+                    date.getFullYear() === new Date().getFullYear();
+
+                  return (
+                    <View style={styles.calendarRowDateItems}>
+                      <Text key={index} style={styles.calendarDateItem}>
+                        {item !== 0 ? item : ""}
+                      </Text>
+                      {isToday && <Text style={styles.calendarDateItemToDay} />}
+                    </View>
+                  );
+                })}
+              </View>
+            );
+          })}
       </View>
     </View>
   );
@@ -137,50 +138,50 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  calendarHeader: {},
   calendarControl: {
     flexDirection: "row",
     alignItems: "center",
-    top: 10,
+    marginTop: 30,
+  },
+  calendarHeader: {
+    marginHorizontal: 95,
   },
   calendarTitle: {
-    textAlign: "center",
-    marginHorizontal: 110,
+    fontWeight: "bold",
+    fontSize: 20,
   },
   calendarBody: {
-    top: 30,
+    marginTop: 40,
   },
-  calendarDay: {
+  calendarDayList: {
     flexDirection: "row",
-    width: "100%",
   },
-  calendarDayItem: {},
-  calendarDayName: {
-    marginHorizontal: 12.5,
+  calendarDayListItem: {},
+  calendarDayListItemName: {
+    marginHorizontal: 12.3,
     fontWeight: "bold",
     fontSize: 14,
-    color: "#7a51ed",
   },
-  calendarDate: {},
   calendarRowDate: {
     flexDirection: "row",
     margin: 5,
   },
-  calendarDateItemWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 47,
-    height: 47,
-  },
-  calendarDateItem: {
+  calendarRowDateItems: {
     width: 40,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 100,
     marginHorizontal: 5,
   },
-  calendarDateItems: {
+  calendarDateItem: {
     fontSize: 14,
     fontWeight: "bold",
+  },
+  calendarDateItemToDay: {
+    zIndex: 99,
+    height: 4,
+    width: 25,
+    backgroundColor: "#aced51",
   },
 });
