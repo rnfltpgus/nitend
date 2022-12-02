@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import CalendarRowDateItem from "../components/CalendarRowDateItem";
-
-import Icon from "react-native-vector-icons/MaterialIcons";
+import CalendarControl from "../components/calendarControl/CalendarControl";
+import CalendarDayList from "../components/calendarBody/CalendarDayList";
+import CalendarRowDate from "../components/calendarBody/CalendarRowDate";
 
 const Calendar = () => {
   const [date] = useState(new Date());
@@ -78,76 +72,23 @@ const Calendar = () => {
 
   return (
     <View style={styles.calendarContainer}>
-      <View style={styles.calendarControl}>
-        <TouchableOpacity onPress={prevMonth}>
-          <Icon name="chevron-left" size={25} />
-        </TouchableOpacity>
-        <View style={styles.calendarHeader}>
-          <Text style={styles.calendarTitle}>
-            {currentYear} / {month + 1 < 10 ? `0${month + 1}` : month + 1}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={nextMonth}>
-          <Icon name="chevron-right" size={25} />
-        </TouchableOpacity>
-      </View>
-
+      <CalendarControl
+        prevMonth={prevMonth}
+        currentYear={currentYear}
+        month={month}
+        nextMonth={nextMonth}
+      />
       <View style={styles.calendarBody}>
-        <View style={styles.calendarDayList}>
-          {dayListEN.map((day, idx) => {
-            return (
-              <View
-                key={day}
-                style={
-                  (styles.calendarDayListItem,
-                  (idx === 0 && {
-                    marginLeft: 0,
-                    backgroundColor: "#ef7878",
-                  }) ||
-                    (idx === 6 && {
-                      marginLeft: 0,
-                      backgroundColor: "#72a6ff",
-                    }))
-                }>
-                <Text style={styles.calendarDayListItemName}>{day}</Text>
-              </View>
-            );
-          })}
-        </View>
-
-        {calendarDate &&
-          calendarDate.map((rowDate, idx) => {
-            return (
-              <FlatList
-                key={idx}
-                data={rowDate}
-                extraData={selectedDay}
-                horizontal
-                style={styles.calendarRowDate}
-                renderItem={({ item, index }) => {
-                  const renderItemKey = `${today}${idx}${index}`;
-                  const backgroundColor =
-                    renderItemKey === selectedDay ? "#7379e7" : "#fff";
-                  const color =
-                    renderItemKey === selectedDay ? "white" : "black";
-                  const isToday =
-                    today === item &&
-                    currentMonth === month &&
-                    date.getFullYear() === new Date().getFullYear();
-
-                  return (
-                    <CalendarRowDateItem
-                      item={item}
-                      onPress={() => setSelectedDay(renderItemKey)}
-                      backgroundColor={{ backgroundColor }}
-                      textColor={{ color }}
-                      isToday={isToday}
-                    />
-                  );
-                }}
-              />
-            );
-          })}
+        <CalendarDayList dayListEN={dayListEN} />
+        <CalendarRowDate
+          calendarDate={calendarDate}
+          selectedDay={selectedDay}
+          today={today}
+          currentMonth={currentMonth}
+          date={date}
+          month={month}
+          setSelectedDay={setSelectedDay}
+        />
       </View>
     </View>
   );
@@ -160,38 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 15,
   },
-  calendarControl: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 30,
-  },
-  calendarHeader: {
-    flex: 1,
-    marginHorizontal: 95,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  calendarTitle: {
-    fontWeight: "bold",
-    fontSize: 20,
-    flex: 1,
-  },
   calendarBody: {
     marginTop: 40,
-  },
-  calendarDayList: {
-    flexDirection: "row",
-    marginHorizontal: 5,
-  },
-  calendarDayListItem: {
-    flex: 1,
-  },
-  calendarDayListItemName: {
-    marginHorizontal: 12,
-    fontWeight: "bold",
-  },
-  calendarRowDate: {
-    marginHorizontal: 5,
-    marginTop: 10,
   },
 });
