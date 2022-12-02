@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+
+import CalendarRowDateItem from "../components/CalendarRowDateItem";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -11,8 +19,7 @@ const Calendar = () => {
   const [month, setMonth] = useState<number>(date.getMonth());
   const [calendarDate, setCalendarDate] = useState<any[] | null>(null);
   const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dayListKR = ["일", "월", "화", "수", "목", "금", "토"];
-  // const [toggleSwitch, setToggleSwitch] = useState(toggleSwitch);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     date.setDate(1);
@@ -83,7 +90,7 @@ const Calendar = () => {
 
       <View style={styles.calendarBody}>
         <View style={styles.calendarDayList}>
-          {(false ? dayListKR : dayListEN).map((day, idx) => {
+          {dayListEN.map((day, idx) => {
             return (
               <View
                 key={day}
@@ -107,23 +114,33 @@ const Calendar = () => {
         {calendarDate &&
           calendarDate.map((rowDate, idx) => {
             return (
-              <View style={styles.calendarRowDate} key={idx}>
-                {rowDate.map((item: any, index: number) => {
+              <FlatList
+                key={idx}
+                data={rowDate}
+                keyExtractor={item => item.idx}
+                extraData={selectedId}
+                horizontal
+                style={styles.calendarRowDate}
+                renderItem={({ item, index }) => {
+                  const backgroundColor =
+                    item.index === selectedId ? "#6e3b6e" : "#f9c2ff";
+                  const color = item.index === selectedId ? "white" : "black";
                   const isToday =
                     today === item &&
                     currentMonth === month &&
                     date.getFullYear() === new Date().getFullYear();
 
                   return (
-                    <View style={styles.calendarRowDateItems}>
-                      <Text key={index} style={styles.calendarDateItem}>
-                        {item !== 0 ? item : ""}
-                      </Text>
-                      {isToday && <Text style={styles.calendarDateItemToDay} />}
-                    </View>
+                    <CalendarRowDateItem
+                      item={item}
+                      onPress={() => setSelectedId(item.index)}
+                      backgroundColor={{ backgroundColor }}
+                      textColor={{ color }}
+                      isToday={isToday}
+                    />
                   );
-                })}
-              </View>
+                }}
+              />
             );
           })}
       </View>
@@ -136,7 +153,7 @@ export default Calendar;
 const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1,
-    alignItems: "center",
+    marginHorizontal: 15,
   },
   calendarControl: {
     flexDirection: "row",
@@ -144,44 +161,32 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   calendarHeader: {
+    flex: 1,
     marginHorizontal: 95,
   },
   calendarTitle: {
     fontWeight: "bold",
     fontSize: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   calendarBody: {
     marginTop: 40,
   },
   calendarDayList: {
     flexDirection: "row",
-  },
-  calendarDayListItem: {},
-  calendarDayListItemName: {
-    marginHorizontal: 12.3,
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  calendarRowDate: {
-    flexDirection: "row",
-    margin: 5,
-  },
-  calendarRowDateItems: {
-    width: 40,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 100,
     marginHorizontal: 5,
   },
-  calendarDateItem: {
-    fontSize: 14,
+  calendarDayListItem: {
+    flex: 1,
+  },
+  calendarDayListItemName: {
+    marginHorizontal: 12,
     fontWeight: "bold",
   },
-  calendarDateItemToDay: {
-    zIndex: 99,
-    height: 4,
-    width: 25,
-    backgroundColor: "#aced51",
+  calendarRowDate: {
+    marginHorizontal: 5,
+    marginTop: 10,
   },
 });
