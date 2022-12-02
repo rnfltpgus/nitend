@@ -29,6 +29,8 @@
 - [하단탭 네비게이션 구현](https://reactnavigation.org/docs/bottom-tab-navigator/)
 - [MaterialIcons 아이콘 이용](https://oblador.github.io/react-native-vector-icons/)
 - [네이티브 캘린더 오픈소스 참고](https://github.com/wix/react-native-calendars)
+- [flatList 이용 방법](https://reactnative.dev/docs/flatlist)
+- [React Native 라이브러리 이용](https://reactnative.dev/blog/2022/06/16/resources-migrating-your-react-native-library-to-the-new-architecture#migration-status-of-popular-libraries)
 
 <br/>
 

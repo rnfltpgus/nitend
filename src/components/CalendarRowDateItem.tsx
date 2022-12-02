@@ -4,8 +4,8 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 interface CalendarRowDateItemProps {
   item: number;
   onPress: () => void;
-  backgroundColor: boolean;
-  textColor: boolean;
+  backgroundColor: string;
+  textColor: string;
   isToday: boolean;
 }
 
@@ -20,7 +20,7 @@ const CalendarRowDateItem = ({
     <TouchableOpacity
       onPress={onPress}
       style={[styles.calendarRowDateItems, backgroundColor]}>
-      <Text key={item.index} style={styles.calendarDateItem}>
+      <Text key={item} style={[styles.calendarDateItem, textColor]}>
         {item !== 0 ? item : ""}
       </Text>
       {isToday && <Text style={styles.calendarDateItemToDay} />}

@@ -17,9 +17,11 @@ const Calendar = () => {
   const [currentMonth] = useState<number>(date.getMonth());
   const [currentYear] = useState<number>(date.getFullYear());
   const [month, setMonth] = useState<number>(date.getMonth());
-  const [calendarDate, setCalendarDate] = useState<any[] | null>(null);
+  const [calendarDate, setCalendarDate] = useState<Array<number[]> | null>(
+    null,
+  );
   const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
 
   useEffect(() => {
     date.setDate(1);
@@ -31,6 +33,7 @@ const Calendar = () => {
     date.setDate(1);
     setMonth(date.getMonth());
     settingMonth();
+    setSelectedDay(null);
   };
 
   const nextMonth = () => {
@@ -38,6 +41,7 @@ const Calendar = () => {
     date.setDate(1);
     setMonth(date.getMonth());
     settingMonth();
+    setSelectedDay(null);
   };
 
   const settingMonth = () => {
@@ -117,14 +121,15 @@ const Calendar = () => {
               <FlatList
                 key={idx}
                 data={rowDate}
-                keyExtractor={item => item.idx}
-                extraData={selectedId}
+                extraData={selectedDay}
                 horizontal
                 style={styles.calendarRowDate}
                 renderItem={({ item, index }) => {
+                  const renderItemKey = `${today}${idx}${index}`;
                   const backgroundColor =
-                    item.index === selectedId ? "#6e3b6e" : "#f9c2ff";
-                  const color = item.index === selectedId ? "white" : "black";
+                    renderItemKey === selectedDay ? "#7379e7" : "#fff";
+                  const color =
+                    renderItemKey === selectedDay ? "white" : "black";
                   const isToday =
                     today === item &&
                     currentMonth === month &&
@@ -133,7 +138,7 @@ const Calendar = () => {
                   return (
                     <CalendarRowDateItem
                       item={item}
-                      onPress={() => setSelectedId(item.index)}
+                      onPress={() => setSelectedDay(renderItemKey)}
                       backgroundColor={{ backgroundColor }}
                       textColor={{ color }}
                       isToday={isToday}
