@@ -4,8 +4,12 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 interface CalendarRowDateItemProps {
   item: number;
   onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
+  backgroundColor: {
+    [key: string]: string;
+  };
+  textColor: {
+    [key: string]: string;
+  };
   isToday: boolean;
 }
 

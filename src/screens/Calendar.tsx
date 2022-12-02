@@ -21,7 +21,7 @@ const Calendar = () => {
     null,
   );
   const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState("");
 
   useEffect(() => {
     date.setDate(1);
@@ -33,7 +33,7 @@ const Calendar = () => {
     date.setDate(1);
     setMonth(date.getMonth());
     settingMonth();
-    setSelectedDay(null);
+    setSelectedDay("");
   };
 
   const nextMonth = () => {
@@ -41,7 +41,7 @@ const Calendar = () => {
     date.setDate(1);
     setMonth(date.getMonth());
     settingMonth();
-    setSelectedDay(null);
+    setSelectedDay("");
   };
 
   const settingMonth = () => {
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
   calendarHeader: {
     flex: 1,
     marginHorizontal: 95,
+    justifyContent: "center",
+    alignItems: "center",
   },
   calendarTitle: {
     fontWeight: "bold",
     fontSize: 20,
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   calendarBody: {
     marginTop: 40,
