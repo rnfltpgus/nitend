@@ -4,6 +4,10 @@ import { View, StyleSheet } from "react-native";
 import CalendarControl from "../components/calendarControl/CalendarControl";
 import CalendarDayList from "../components/calendarBody/CalendarDayList";
 import CalendarRowDate from "../components/calendarBody/CalendarRowDate";
+import CalendarTabArea from "../components/calendarTabArea/CalendarTabArea";
+import { Separator } from "../components/common/Separator";
+
+const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const Calendar = () => {
   const [date] = useState(new Date());
@@ -14,7 +18,6 @@ const Calendar = () => {
   const [calendarDate, setCalendarDate] = useState<Array<number[]> | null>(
     null,
   );
-  const dayListEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [selectedDay, setSelectedDay] = useState("");
 
   useEffect(() => {
@@ -90,6 +93,8 @@ const Calendar = () => {
           setSelectedDay={setSelectedDay}
         />
       </View>
+      <Separator />
+      <CalendarTabArea />
     </View>
   );
 };

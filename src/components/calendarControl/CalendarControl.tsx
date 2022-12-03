@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 30,
+    marginHorizontal: 16,
   },
   calendarHeader: {
     flex: 1,
-    marginHorizontal: 95,
     justifyContent: "center",
     alignItems: "center",
   },
